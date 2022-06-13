@@ -11,7 +11,7 @@ const randomFloat = function (min, max, digits) {
   if (min >= max || min < 0 || max <= 0) {
     return ('Задан неверный диапазон! Укажите другие числа.');
   }
-  return (Math.floor(Math.random() * (max - min + 1)) + min).toFixed(digits);
+  return (Math.random() * (max - min) + min).toFixed(digits);
 };
 
 randomInteger(0, 1);
