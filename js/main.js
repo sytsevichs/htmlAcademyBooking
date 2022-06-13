@@ -7,7 +7,7 @@ const randomInteger = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const randomFloat = function (min, max, digits) {
+const randomFloat = function (min, max, digits = 2) {
   if (min >= max || min < 0 || max <= 0) {
     return ('Задан неверный диапазон! Укажите другие числа.');
   }
