@@ -6,9 +6,9 @@ const getRandomInteger = function (min, max) {
 
 const getRandomFloat = function (min, max, digits = 2) {
   //Возведение в степень для того, чтобы учитывать количество разрядов при генерации чисел
-  min *= Math.pow(10, digits);
-  max *= Math.pow(10, digits);
-  return (getRandomInteger(min, max) / Math.pow(10, digits)); //Единственный результат функции, min max никуда не возвращаются и не изменяются по факту
+  const min_ = min*Math.pow(10, digits);
+  const max_ = max*Math.pow(10, digits);
+  return (getRandomInteger(min_, max_) / Math.pow(10, digits));
 };
 
 //Объявление всех используемых для генерации данных массивов и констант
@@ -97,5 +97,3 @@ const changeTitle = () => {
 
 author.avatar = AUTHOR_AVATARS[getRandomInteger(0, 9)];
 offer.title = changeTitle();
-
-
