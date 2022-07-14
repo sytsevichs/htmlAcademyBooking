@@ -1,2 +1,2 @@
 import './utils/math.js';
-import './data/datagen.js';
+import './data/generation/datagen.js';
