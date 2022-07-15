@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomFloat} from './utils/math.js';
+import {getRandomInteger, getRandomFloat} from '../../utils/math.js';
 //Объявление всех используемых для генерации данных массивов и констант
 const NUMBER_OF_AVATARS = 10;
 const AUTHOR_AVATARS = Array.from({ length: NUMBER_OF_AVATARS }, (item, index) => index === 9 ? `img/avatars/user${index + 1}.png` : `img/avatars/user0${index + 1}.png`); // Генерация массива аватарок авторов
@@ -70,7 +70,8 @@ const offer = {
   address: someLocation,
   price: getRandomInteger(PRICE_DAY_MIN, PRICE_DAY_MAX),
   type: OFFER_TYPES[getRandomInteger(0, 4)],
-  room: getRandomInteger(1, 8),
+  rooms: getRandomInteger(1, 8),
+  gests: getRandomInteger(1, 8),
   checkin: OFFER_CHECKIN_TIMES[getRandomInteger(0, 2)],
   checkout: OFFER_CHECKOUT_TIMES[getRandomInteger(0, 2)],
   features: Array.from({ length: getRandomInteger(1, 5) }, (item, index) => OFFER_FEATURES[index]),
