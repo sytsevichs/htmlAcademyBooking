@@ -64,14 +64,16 @@ const someLocation = {
 // Диапазон стоимости предложения
 const PRICE_DAY_MIN = 10000;
 const PRICE_DAY_MAX = 20000;
+const NUMBER_MIN = 1;
+const NUMBER_MAX = 8;
 
 const offer = {
   title: offerTitles['normal'],
   address: someLocation,
   price: getRandomInteger(PRICE_DAY_MIN, PRICE_DAY_MAX),
   type: OFFER_TYPES[getRandomInteger(0, 4)],
-  rooms: getRandomInteger(1, 8),
-  gests: getRandomInteger(1, 8),
+  rooms: getRandomInteger(NUMBER_MIN, NUMBER_MAX),
+  gests: getRandomInteger(NUMBER_MIN, NUMBER_MAX),
   checkin: OFFER_CHECKIN_TIMES[getRandomInteger(0, 2)],
   checkout: OFFER_CHECKOUT_TIMES[getRandomInteger(0, 2)],
   features: Array.from({ length: getRandomInteger(1, 5) }, (item, index) => OFFER_FEATURES[index]),
