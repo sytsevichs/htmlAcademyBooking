@@ -71,14 +71,14 @@ const offer = {
   title: offerTitles['normal'],
   address: someLocation,
   price: getRandomInteger(PRICE_DAY_MIN, PRICE_DAY_MAX),
-  type: OFFER_TYPES[getRandomInteger(0, 4)],
+  type: OFFER_TYPES[getRandomInteger(0, OFFER_TYPES.length-1)],
   rooms: getRandomInteger(NUMBER_MIN, NUMBER_MAX),
   gests: getRandomInteger(NUMBER_MIN, NUMBER_MAX),
-  checkin: OFFER_CHECKIN_TIMES[getRandomInteger(0, 2)],
-  checkout: OFFER_CHECKOUT_TIMES[getRandomInteger(0, 2)],
-  features: Array.from({ length: getRandomInteger(1, 5) }, (item, index) => OFFER_FEATURES[index]),
-  description: OFFER_DESCRIPTION[getRandomInteger(0, 5)],
-  photos: Array.from({ length: getRandomInteger(1, 3) }, (item, index) => OFFER_PHOTOS[index])
+  checkin: OFFER_CHECKIN_TIMES[getRandomInteger(0, OFFER_CHECKIN_TIMES.length-1)],
+  checkout: OFFER_CHECKOUT_TIMES[getRandomInteger(0, OFFER_CHECKOUT_TIMES.length-1)],
+  features: Array.from({ length: getRandomInteger(1, OFFER_FEATURES.length-1) }, (item, index) => OFFER_FEATURES[index]),
+  description: OFFER_DESCRIPTION[getRandomInteger(0, OFFER_DESCRIPTION.length-1)],
+  photos: Array.from({ length: getRandomInteger(1, OFFER_PHOTOS.length-1) }, (item, index) => OFFER_PHOTOS[index])
 };
 
 // Временный вызов неиспользуемых объектов

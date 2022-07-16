@@ -5,19 +5,18 @@ const mapElement = cardTemplate.cloneNode(true);
 //заголовок объявления
 mapElement.querySelector('.popup__title').textContent = offer.title;
 //адрес
-mapElement.querySelector('.popup__text--address').textContent = `Координаты: ${offer.address.lat} , ${offer.address.lng}`;
+mapElement.querySelector('.popup__text--address').textContent = `Адрес (координаты): ${offer.address.lat} , ${offer.address.lng}`;
 //цена
 mapElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
 //тип жилья
-const translateOfferType = (type) => {
-  switch (type) {
-    case 'flat': return 'Квартира';
-    case 'bungalow': return 'Бунгало';
-    case 'house': return 'Дом';
-    case 'palace': return 'Дворец';
-    default : return 'Отель';
-  }
+const offerTypes = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель',
 };
+const translateOfferType = (type) => offerTypes[type];
 mapElement.querySelector('.popup__type').textContent = translateOfferType(offer.type);
 //Функция для определения окончания числительного
 const getWordEnding = (counter, modifier) => {
@@ -49,7 +48,7 @@ const hideEmptyElement = (data, element) => {
     element.classList.appendChild('hidden');
   }
   else {
-    return data;
+    element.textContent = data;
   }
 };
 //количество гостей и комнат
@@ -70,7 +69,7 @@ features.forEach((feature) => {
 //описание объекта недвижимости
 const description = mapElement.querySelector('.popup__description');
 //offer.description = ' '; // Проверка фукнции
-description.textContent = hideEmptyElement(offer.description, description);
+hideEmptyElement(offer.description, description);
 //все фотографии
 const photosContainer = mapElement.querySelector('.popup__photos');
 const photos = photosContainer.querySelectorAll('.popup__photo');
