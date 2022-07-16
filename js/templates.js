@@ -1,4 +1,5 @@
 import {author, offer} from './data/generation/datagen.js';
+
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const mapElement = cardTemplate.cloneNode(true);
 //заголовок объявления
