@@ -1,4 +1,11 @@
-import {getWordEnding} from './utils/util.js';
+import {
+  getWordEnding,
+  fillAddressCoordinates
+} from './utils/util.js';
+
+import {
+  OFFER_TYPES
+} from './data/general.js';
 
 const createOfferPopup = (author, offer) => {
   const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
@@ -6,18 +13,11 @@ const createOfferPopup = (author, offer) => {
   //заголовок объявления
   mapElement.querySelector('.popup__title').textContent = offer.title;
   //адрес
-  mapElement.querySelector('.popup__text--address').textContent = `Адрес (координаты): ${offer.address.lat} , ${offer.address.lng}`;
+  mapElement.querySelector('.popup__text--address').textContent = `Адрес (координаты): ${fillAddressCoordinates(offer.address.lat, offer.address.lng)}`;
   //цена
   mapElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-  //тип жилья
-  const offerTypes = {
-    flat: 'Квартира',
-    bungalow: 'Бунгало',
-    house: 'Дом',
-    palace: 'Дворец',
-    hotel: 'Отель',
-  };
-  const translateOfferType = (type) => offerTypes[type];
+
+  const translateOfferType = (type) => OFFER_TYPES[type];
   mapElement.querySelector('.popup__type').textContent = translateOfferType(offer.type);
 
   //скрыть пустой элемент или вернуть данные
@@ -63,4 +63,6 @@ const createOfferPopup = (author, offer) => {
   return mapElement;
 };
 
-export {createOfferPopup};
+export {
+  createOfferPopup
+};
