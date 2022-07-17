@@ -15,7 +15,7 @@ const createOfferPopup = (author, offer) => {
   mapElement.querySelector('.popup__title').textContent = offer.title;
   //адрес
 
-mapElement.querySelector('.popup__text--address').textContent = `Адрес (координаты): ${fillAddressCoordinates(offer.address.lat, offer.address.lng)}`;
+  mapElement.querySelector('.popup__text--address').textContent = `Адрес (координаты): ${fillAddressCoordinates(offer.address.lat, offer.address.lng)}`;
   //цена
   mapElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
 
