@@ -7,17 +7,20 @@ import {
   OFFER_TYPES
 } from './data/general.js';
 
+
 const createOfferPopup = (author, offer) => {
   const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
   const mapElement = cardTemplate.cloneNode(true);
   //заголовок объявления
   mapElement.querySelector('.popup__title').textContent = offer.title;
   //адрес
-  mapElement.querySelector('.popup__text--address').textContent = `Адрес (координаты): ${fillAddressCoordinates(offer.address.lat, offer.address.lng)}`;
+
+mapElement.querySelector('.popup__text--address').textContent = `Адрес (координаты): ${fillAddressCoordinates(offer.address.lat, offer.address.lng)}`;
   //цена
   mapElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
 
   const translateOfferType = (type) => OFFER_TYPES[type];
+
   mapElement.querySelector('.popup__type').textContent = translateOfferType(offer.type);
 
   //скрыть пустой элемент или вернуть данные
@@ -66,3 +69,4 @@ const createOfferPopup = (author, offer) => {
 export {
   createOfferPopup
 };
+

@@ -173,6 +173,7 @@
       }
       catch (e) { }
       /* eslint-enable */
+
     return supportsPassive;
   }
   function getSupportsTouchActionNone() {

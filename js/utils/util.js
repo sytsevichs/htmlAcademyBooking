@@ -36,6 +36,7 @@ const getWordEnding = (counter, modifier) => {
     }
   }
 };
+
 //адрес
 const fillAddressCoordinates = (lat, lng) => `${lat} , ${lng}`;
 

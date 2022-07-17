@@ -6,6 +6,7 @@ import './map/map-api.js';
 import {
   generateRandomAuthor,
   generateRandomOffer
+
 } from './data/generation/datagen.js';
 
 import {
@@ -40,3 +41,4 @@ for(let i = 0; i < AD_NUMBER; i++){
 }
 
 resetDefaultMarker();
+
