@@ -37,9 +37,13 @@ const getWordEnding = (counter, modifier) => {
   }
 };
 
+//адрес
+const fillAddressCoordinates = (lat, lng) => `${lat} , ${lng}`;
+
 export {
   isEscapeKey,
   isEnterKey,
   showMessage,
-  getWordEnding
+  getWordEnding,
+  fillAddressCoordinates
 };

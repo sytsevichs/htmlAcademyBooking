@@ -1,8 +1,6 @@
 import {
   getWordEnding
 } from './utils/util.js';
-//подключение слайдера noUiSlider для управление ценой
-//import * as noUiSlider from '../node_modules/nouislider/dist/nouislider.js';
 // Деактивация формы
 const makeFormInactive = (form) => {
   form.classList.add('ad-form--disabled');
@@ -10,18 +8,18 @@ const makeFormInactive = (form) => {
     element.setAttribute('disabled', true);
   });
 };
-/*
+
 // Активация формы
 const makeFormActive = (form) => {
   form.classList.remove('ad-form--disabled');
   form.querySelectorAll('fieldset').forEach((element) => {
-    element.setAttribute('disabled', false);
+    element.removeAttribute('disabled');
   });
 };
 /**/
 //Начальная деактивация формы, до загрузки карты все должно быть в неактивном состоянии
 const adForm = document.querySelector('.ad-form');
-//makeFormInactive(adForm);
+makeFormInactive(adForm);
 makeFormInactive(document.querySelector('.map__filters'));
 
 // Поле «Тип жилья» влияет на минимальное значение поля «Цена за ночь»
@@ -36,25 +34,42 @@ const minOfferPrice = {
 const adOfferType = adForm.querySelector('#type');
 const adOfferPrice = adForm.querySelector('#price');
 
+//Пользователь может вписать цену в поле, а может указать её перемещением ползунка слайдера
+const priceSlider = document.querySelector('.ad-form__slider');
+noUiSlider.create(priceSlider, {
+  start: Number(minOfferPrice[adOfferType.value]),
+  connect: 'lower',
+  range: {
+    'min': Number(minOfferPrice[adOfferType.value]),
+    'max': 100000
+  },
+  step: 100,
+  format: {
+    to: function(value) { return Math.round(value); },
+    from: function(value) { return Math.round(value); }
+  }
+});
+
+// eslint-disable-next-line no-unused-vars
+priceSlider.noUiSlider.on('update', (...rest) => {
+  adOfferPrice.value = priceSlider.noUiSlider.get();
+});
+
+
 const checkFormData = (type) => {
   adOfferPrice.setAttribute('min', minOfferPrice[type.value]);
   adOfferPrice.setAttribute('placeholder', minOfferPrice[type.value]);
-  /*
-  console.log(noUiSlider);
-  //Пользователь может вписать цену в поле, а может указать её перемещением ползунка слайдера
-  const priceSlider = document.querySelector('.ad-form__slider');
 
-  noUiSlider.create(priceSlider, {
-    start: [minOfferPrice[type.value]],
-    connect: true,
+  priceSlider.noUiSlider.updateOptions( {
+    start: Math.round(Number(minOfferPrice[type.value])),
     range: {
-      'min': minOfferPrice[type.value],
+      'min': Math.round(Number(minOfferPrice[adOfferType.value])),
       'max': 100000
-    }
-  }
-  );
-  /* */
+    },
+  } );
 };
+
+adOfferPrice.addEventListener('change', ()=>priceSlider.noUiSlider.set(adOfferPrice.value)) ;
 //Устанавливаем начальное минимальное значение при первой загрузке
 checkFormData(adOfferType);
 //Устанавливаем значения при изменении вида предложения.
@@ -107,3 +122,4 @@ adOfferCheckOut.addEventListener('change', () => {
 });
 
 /**/
+export {makeFormInactive,makeFormActive};

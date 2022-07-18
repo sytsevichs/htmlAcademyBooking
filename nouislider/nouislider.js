@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*! nouislider - 15.6.0 - 05/01/2022 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -155,6 +156,7 @@
                   end: "mouseup touchend",
               };
   }
+  /* eslint-disable */
   // https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
   // Issue #785
   function getSupportsPassive() {
@@ -171,11 +173,13 @@
       }
       catch (e) { }
       /* eslint-enable */
-      return supportsPassive;
+
+    return supportsPassive;
   }
   function getSupportsTouchActionNone() {
-      return window.CSS && CSS.supports && CSS.supports("touch-action", "none");
+    return window.CSS && CSS.supports && CSS.supports('touch-action', 'none');
   }
+  /* eslint-disable */
   //endregion
   //region Range Calculation
   // Determine the size of a sub-range in relation to a full range.
