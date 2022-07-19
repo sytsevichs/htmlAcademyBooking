@@ -7,7 +7,7 @@ import {
   ROOM_PRICE_STEP,
 } from './data/general.js';
 import { postAdvertismentSingle } from './data/fetch-api.js';
-
+import { resetDefaultMarker } from './map/map-api.js';
 // Деактивация формы
 const makeFormInactive = (form) => {
   form.classList.add('ad-form--disabled');
@@ -15,7 +15,6 @@ const makeFormInactive = (form) => {
     element.setAttribute('disabled', true);
   });
 };
-
 // Активация формы
 const makeFormActive = (form) => {
   form.classList.remove('ad-form--disabled');
@@ -26,6 +25,7 @@ const makeFormActive = (form) => {
 
 //Начальная деактивация формы, до загрузки карты все должно быть в неактивном состоянии
 const adForm = document.querySelector('.ad-form');
+
 makeFormInactive(adForm);
 makeFormInactive(document.querySelector('.map__filters'));
 
@@ -61,7 +61,6 @@ noUiSlider.create(priceSlider, {
 priceSlider.noUiSlider.on('update', (...rest) => {
   adOfferPrice.value = priceSlider.noUiSlider.get();
 });
-
 
 const checkFormData = (type) => {
   adOfferPrice.setAttribute('min', minOfferPrice[type.value]);
@@ -108,6 +107,22 @@ const pristine = new Pristine(adForm, {
   errorTextTag: 'span',
   errorTextClass: 'ad-form__error'
 });
+//Поля «Время заезда» и «Время выезда» синхронизированы
+const adOfferCheckIn = adForm.querySelector('#timein');
+const adOfferCheckOut = adForm.querySelector('#timeout');
+
+adOfferCheckIn.addEventListener('change', () => {
+  adOfferCheckOut.value = adOfferCheckIn.value;
+});
+adOfferCheckOut.addEventListener('change', () => {
+  adOfferCheckIn.value = adOfferCheckOut.value;
+});
+
+//Очистка формы
+const clearForm = () => {
+  resetDefaultMarker();
+};
+
 //Добавляем пользовательскую проверку предложения
 pristine.addValidator(adOfferСapacity, capacityIsValid, capacityErrorMessage);
 
@@ -126,24 +141,20 @@ const enableSubmitButton = () => {
 };
 
 //Обработка события отправки
-adForm.addEventListener('submit', (evt) => {
+submitButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   disableSubmitButton();
   const isValid = pristine.validate();
   if (isValid) {
-    postAdvertismentSingle(new FormData(evt.target),errorHandler);
+    postAdvertismentSingle(new FormData(evt.target), clearForm, errorHandler);
   }
   enableSubmitButton();
 });
 
-//Поля «Время заезда» и «Время выезда» синхронизированы
-const adOfferCheckIn = adForm.querySelector('#timein');
-const adOfferCheckOut = adForm.querySelector('#timeout');
-adOfferCheckIn.addEventListener('change', () => {
-  adOfferCheckOut.value = adOfferCheckIn.value;
-});
-adOfferCheckOut.addEventListener('change', () => {
-  adOfferCheckIn.value = adOfferCheckOut.value;
+const resetButton = adForm.querySelector('.ad-form__reset');
+//Обработка события очистки
+resetButton.addEventListener('click', () => {
+  clearForm();
 });
 
-export {makeFormInactive,makeFormActive,disableSubmitButton,enableSubmitButton};
+export {makeFormInactive,makeFormActive,clearForm};

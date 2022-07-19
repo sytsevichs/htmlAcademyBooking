@@ -1,9 +1,9 @@
 import './utils/math.js';
 import './data/generation/datagen.js';
-import {getAdvertismentsAll, } from './data/fetch-api.js';
-import './form-api.js';
 import './map/map-api.js';
+import {getAdvertismentsAll, } from './data/fetch-api.js';
 import {createOfferPopup} from './popup.js';
+import './form-api.js';
 
 //Интерфейс работы с картой, доступ к карте только через API
 import {
