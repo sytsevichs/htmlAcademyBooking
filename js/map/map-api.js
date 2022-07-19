@@ -4,6 +4,7 @@ import {
 
 import {
   COORDINATES_TOKIO_CENTER,
+  COORDINATES_DECIMAL_PLACES,
   MAP_ZOOM
 } from '../data/general.js';
 
@@ -29,6 +30,8 @@ const map = L.map('map-canvas')
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  //'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png', {
+  //  attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
   },
 ).addTo(map);
 
@@ -51,14 +54,14 @@ const createNewMarker = (lat, lng, icon, draggable, element) => {
     .on('moveend', (evt) => {
       if (element) {
         const coorinates = evt.target.getLatLng();
-        element.value = fillAddressCoordinates(coorinates.lat,coorinates.lng);
+        element.value = fillAddressCoordinates(coorinates.lat.toFixed(COORDINATES_DECIMAL_PLACES),coorinates.lng.toFixed(COORDINATES_DECIMAL_PLACES));
       }
     });
   return marker;
 };
 
-const addObject2Layer = (object, layer) => object.addTo(layer);
-const addPopup2Marker = (marker,popup) => marker.bindPopup(popup);
+const addObjectToLayer = (object, layer) => object.addTo(layer);
+const addPopupToMarker = (marker,popup) => marker.bindPopup(popup);
 const createNewLayer = () => {
   const newLayer = L.layerGroup().addTo(map);
   return newLayer;
@@ -74,7 +77,7 @@ const resetMap = () => {
 
 // Создаем маркер по уполчанию, который будет отвечать за управление коррдинатами формы предложения
 const defaultMarker = createNewMarker(COORDINATES_TOKIO_CENTER.lat, COORDINATES_TOKIO_CENTER.lng, mainPinIcon, true, document.getElementById('address'));
-addObject2Layer(defaultMarker,map);
+addObjectToLayer(defaultMarker,map);
 
 // Сброс координат маркера
 const resetDefaultMarker = () => {
@@ -89,8 +92,8 @@ export {
   resetDefaultMarker,
   createNewLayer,
   createNewMarker,
-  addObject2Layer,
-  addPopup2Marker,
+  addObjectToLayer,
+  addPopupToMarker,
   resetMap,
 };
 

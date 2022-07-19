@@ -1,6 +1,13 @@
 import {
+  errorHandler,
   getWordEnding
 } from './utils/util.js';
+import {
+  ROOM_PRICE_MAX,
+  ROOM_PRICE_STEP,
+} from './data/general.js';
+import { postAdvertismentSingle } from './data/fetch-api.js';
+
 // Деактивация формы
 const makeFormInactive = (form) => {
   form.classList.add('ad-form--disabled');
@@ -13,10 +20,10 @@ const makeFormInactive = (form) => {
 const makeFormActive = (form) => {
   form.classList.remove('ad-form--disabled');
   form.querySelectorAll('fieldset').forEach((element) => {
-    element.setAttribute('disabled', false);
+    element.removeAttribute('disabled');
   });
 };
-/**/
+
 //Начальная деактивация формы, до загрузки карты все должно быть в неактивном состоянии
 const adForm = document.querySelector('.ad-form');
 makeFormInactive(adForm);
@@ -41,9 +48,9 @@ noUiSlider.create(priceSlider, {
   connect: 'lower',
   range: {
     'min': Number(minOfferPrice[adOfferType.value]),
-    'max': 100000
+    'max': ROOM_PRICE_MAX
   },
-  step: 100,
+  step: ROOM_PRICE_STEP,
   format: {
     to: function(value) { return Math.round(value); },
     from: function(value) { return Math.round(value); }
@@ -104,11 +111,29 @@ const pristine = new Pristine(adForm, {
 //Добавляем пользовательскую проверку предложения
 pristine.addValidator(adOfferСapacity, capacityIsValid, capacityErrorMessage);
 
+const submitButton = adForm.querySelector('.ad-form__submit');
+
+// Деактивация кнопки
+const disableSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Идет публикация...';
+};
+
+// Активация кнопки
+const enableSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+//Обработка события отправки
 adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  disableSubmitButton();
   const isValid = pristine.validate();
-  if (!isValid) {
-    evt.preventDefault();
+  if (isValid) {
+    postAdvertismentSingle(new FormData(evt.target),errorHandler);
   }
+  enableSubmitButton();
 });
 
 //Поля «Время заезда» и «Время выезда» синхронизированы
@@ -121,5 +146,4 @@ adOfferCheckOut.addEventListener('change', () => {
   adOfferCheckIn.value = adOfferCheckOut.value;
 });
 
-/**/
-export {makeFormInactive,makeFormActive};
+export {makeFormInactive,makeFormActive,disableSubmitButton,enableSubmitButton};
