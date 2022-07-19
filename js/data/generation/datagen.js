@@ -3,6 +3,11 @@ import {
   getRandomFloat
 } from '../../utils/math.js';
 
+import {
+  COORDINATES_DECIMAL_PLACES,
+  AD_NUMBER
+} from '../general.js';
+
 //Объявление всех используемых для генерации данных массивов и констант
 const NUMBER_OF_AVATARS = 10;
 
@@ -74,25 +79,25 @@ const NUMBER_MAX = 8;
 const generateRandomAuthor = () => {
   // Автор
   const author = {
-    avatar: AUTHOR_AVATARS[getRandomInteger(1, 10)]
+    avatar: AUTHOR_AVATARS[getRandomInteger(1, NUMBER_OF_AVATARS)]
   };
   return author;
 };
 
 // Генерация случайного адреса
-const someLocation = () => {
+const getRandomLocation = () => {
   const address = {
-    lat: getRandomFloat(LATITUDE_MIN, LATITUDE_MAX, 5),
-    lng: getRandomFloat(LONGITUDE_MIN, LONGITUDE_MAX, 5)
+    lat: getRandomFloat(LATITUDE_MIN, LATITUDE_MAX, COORDINATES_DECIMAL_PLACES),
+    lng: getRandomFloat(LONGITUDE_MIN, LONGITUDE_MAX, COORDINATES_DECIMAL_PLACES)
   };
   return address;
 };
 
 // Генерация случайного предложения
-const generateRandomOffer = () => {
+const generateRandomOffer = (location) => {
   const offer = {
     title: offerTitles['normal'],
-    address: someLocation(),
+    address: location,
     price: getRandomInteger(PRICE_DAY_MIN, PRICE_DAY_MAX),
     type: OFFER_TYPES[getRandomInteger(0, OFFER_TYPES.length - 1)],
     rooms: getRandomInteger(NUMBER_MIN, NUMBER_MAX),
@@ -125,7 +130,20 @@ const generateRandomOffer = () => {
   return offer;
 };
 
+// функция генерации одного предложения
+const generatedAdvertisment = () => {
+  const author = generateRandomAuthor();
+  const location = getRandomLocation();
+  const offer = generateRandomOffer(location);
+  return {author,offer,location};
+};
+// Генерируем массив предложений
+const generatedAdvertisments = [...Array(AD_NUMBER)].map( () => generatedAdvertisment());
+
 export {
+  generatedAdvertisments,
+  generatedAdvertisment,
   generateRandomAuthor,
+  getRandomLocation,
   generateRandomOffer
 };

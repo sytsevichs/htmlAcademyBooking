@@ -6,8 +6,8 @@ const mainPinIcon = L.icon({
 
 const pinIcon = L.icon({
   iconUrl: '../../img/pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
 });
 
 export {

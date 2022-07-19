@@ -1,6 +1,13 @@
 import {
+  errorHandler,
   getWordEnding
 } from './utils/util.js';
+import {
+  ROOM_PRICE_MAX,
+  ROOM_PRICE_STEP,
+} from './data/general.js';
+import { postAdvertismentSingle } from './data/fetch-api.js';
+import { resetDefaultMarker } from './map/map-api.js';
 // Деактивация формы
 const makeFormInactive = (form) => {
   form.classList.add('ad-form--disabled');
@@ -8,7 +15,6 @@ const makeFormInactive = (form) => {
     element.setAttribute('disabled', true);
   });
 };
-
 // Активация формы
 const makeFormActive = (form) => {
   form.classList.remove('ad-form--disabled');
@@ -16,9 +22,10 @@ const makeFormActive = (form) => {
     element.removeAttribute('disabled');
   });
 };
-/**/
+
 //Начальная деактивация формы, до загрузки карты все должно быть в неактивном состоянии
 const adForm = document.querySelector('.ad-form');
+
 makeFormInactive(adForm);
 makeFormInactive(document.querySelector('.map__filters'));
 
@@ -41,9 +48,9 @@ noUiSlider.create(priceSlider, {
   connect: 'lower',
   range: {
     'min': Number(minOfferPrice[adOfferType.value]),
-    'max': 100000
+    'max': ROOM_PRICE_MAX
   },
-  step: 100,
+  step: ROOM_PRICE_STEP,
   format: {
     to: function(value) { return Math.round(value); },
     from: function(value) { return Math.round(value); }
@@ -54,7 +61,6 @@ noUiSlider.create(priceSlider, {
 priceSlider.noUiSlider.on('update', (...rest) => {
   adOfferPrice.value = priceSlider.noUiSlider.get();
 });
-
 
 const checkFormData = (type) => {
   adOfferPrice.setAttribute('min', minOfferPrice[type.value]);
@@ -101,19 +107,10 @@ const pristine = new Pristine(adForm, {
   errorTextTag: 'span',
   errorTextClass: 'ad-form__error'
 });
-//Добавляем пользовательскую проверку предложения
-pristine.addValidator(adOfferСapacity, capacityIsValid, capacityErrorMessage);
-
-adForm.addEventListener('submit', (evt) => {
-  const isValid = pristine.validate();
-  if (!isValid) {
-    evt.preventDefault();
-  }
-});
-
 //Поля «Время заезда» и «Время выезда» синхронизированы
 const adOfferCheckIn = adForm.querySelector('#timein');
 const adOfferCheckOut = adForm.querySelector('#timeout');
+
 adOfferCheckIn.addEventListener('change', () => {
   adOfferCheckOut.value = adOfferCheckIn.value;
 });
@@ -121,5 +118,43 @@ adOfferCheckOut.addEventListener('change', () => {
   adOfferCheckIn.value = adOfferCheckOut.value;
 });
 
-/**/
-export {makeFormInactive,makeFormActive};
+//Очистка формы
+const clearForm = () => {
+  resetDefaultMarker();
+};
+
+//Добавляем пользовательскую проверку предложения
+pristine.addValidator(adOfferСapacity, capacityIsValid, capacityErrorMessage);
+
+const submitButton = adForm.querySelector('.ad-form__submit');
+
+// Деактивация кнопки
+const disableSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Идет публикация...';
+};
+
+// Активация кнопки
+const enableSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+//Обработка события отправки
+submitButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  disableSubmitButton();
+  const isValid = pristine.validate();
+  if (isValid) {
+    postAdvertismentSingle(new FormData(evt.target), clearForm, errorHandler);
+  }
+  enableSubmitButton();
+});
+
+const resetButton = adForm.querySelector('.ad-form__reset');
+//Обработка события очистки
+resetButton.addEventListener('click', () => {
+  clearForm();
+});
+
+export {makeFormInactive,makeFormActive,clearForm};
