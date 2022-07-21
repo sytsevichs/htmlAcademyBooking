@@ -141,7 +141,7 @@ const enableSubmitButton = () => {
 };
 
 //Обработка события отправки
-submitButton.addEventListener('click', (evt) => {
+submitButton.addEventListener('submit', (evt) => {
   evt.preventDefault();
   disableSubmitButton();
   const isValid = pristine.validate();

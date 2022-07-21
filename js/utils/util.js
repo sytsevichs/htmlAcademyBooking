@@ -5,7 +5,7 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 //const isEnterKey = (evt) => evt.key === 'Enter';
 //Обработка системных сообщений
 const MESSAGE_TIME_OUT = 5000;
-
+/*
 const showMessage = (message,type) => {
   const messageContainer = document.createElement('div');
   messageContainer.style.alignSelf = 'center';
@@ -31,8 +31,7 @@ const showMessage = (message,type) => {
 
   setTimeout(() => messageContainer.remove(), MESSAGE_TIME_OUT);
 };
-
-
+*/
 const systemMessage = (message,success) => {
   let alertTemplate = '';
 
@@ -109,7 +108,7 @@ const fillAddressCoordinates = (lat, lng) => `${lat} , ${lng}`;
 
 export {
   isEscapeKey,
-  showMessage,
+  //showMessage,
   systemMessage,
   getWordEnding,
   fillAddressCoordinates,
