@@ -2,15 +2,18 @@ import {systemMessage} from '../utils/util.js';
 import {MESSAGE_TYPES} from './general.js';
 
 const SERVER_URL = 'https://26.javascript.pages.academy/keksobooking';
-const ADVERTISMENT_DATA_SERVICE = `${SERVER_URL}/data`;
+const ADVERTISEMENT_DATA_SERVICE = `${SERVER_URL}/data`;
+//Переменная для сохранение данных сервиса
+let advertisementsData = [];
 
 // Функция загрузки объявлений
-const getAdvertismentsAll = (onSuccess, onError) => {
-  fetch(ADVERTISMENT_DATA_SERVICE)
+const getAdvertisementsAll = (beforeLoad, onSuccess, onError) => {
+  beforeLoad();
+  fetch(ADVERTISEMENT_DATA_SERVICE)
     .then((response) => {
       if (response.ok) {
         return response.json()
-          .then ((data)=>onSuccess(data));
+          .then ((data)=> { advertisementsData=data; onSuccess(advertisementsData); });
       }
       {
         onError(response.status, response.statusText);
@@ -20,8 +23,8 @@ const getAdvertismentsAll = (onSuccess, onError) => {
       systemMessage( `Не удалось загрузить данные: ${err}`, false);
     });
 };
-
-const postAdvertismentSingle = (body, onError) => {
+//постинг формы документа
+const postAdvertisementSingle = (body, onError) => {
   fetch(SERVER_URL,
     {
       method: 'POST',
@@ -40,11 +43,11 @@ const postAdvertismentSingle = (body, onError) => {
     });
 };
 
-
 export
 {
-  getAdvertismentsAll,
-  postAdvertismentSingle
+  advertisementsData,
+  getAdvertisementsAll,
+  postAdvertisementSingle
 };
 
 

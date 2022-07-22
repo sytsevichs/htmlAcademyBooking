@@ -3,11 +3,24 @@ import {
   getWordEnding
 } from './utils/util.js';
 import {
+  FILE_TYPES,
   ROOM_PRICE_MAX,
   ROOM_PRICE_STEP,
 } from './data/general.js';
-import { postAdvertismentSingle } from './data/fetch-api.js';
-import { resetDefaultMarker } from './map/map-api.js';
+
+import {
+  postAdvertisementSingle
+} from './data/fetch-api.js';
+import {
+  closePopups,
+  resetDefaultMarker,
+  resetMap
+} from './map/map-api.js';
+import {
+  mapFiltersCleaner,
+  refreshMap
+} from './map/map-manager.js';
+
 // Деактивация формы
 const makeFormInactive = (form) => {
   form.classList.add('ad-form--disabled');
@@ -25,9 +38,17 @@ const makeFormActive = (form) => {
 
 //Начальная деактивация формы, до загрузки карты все должно быть в неактивном состоянии
 const adForm = document.querySelector('.ad-form');
+const mapFilters = document.querySelector('.map__filters');
 
-makeFormInactive(adForm);
-makeFormInactive(document.querySelector('.map__filters'));
+//Деактивация при загрузке страницы
+const onPageLoading = () => {
+  makeFormInactive(adForm);
+  makeFormInactive(mapFilters);
+};
+
+const activateInput = () => {
+  makeFormActive(adForm);
+};
 
 // Поле «Тип жилья» влияет на минимальное значение поля «Цена за ночь»
 const minOfferPrice = {
@@ -52,8 +73,12 @@ noUiSlider.create(priceSlider, {
   },
   step: ROOM_PRICE_STEP,
   format: {
-    to: function(value) { return Math.round(value); },
-    from: function(value) { return Math.round(value); }
+    to: function (value) {
+      return Math.round(value);
+    },
+    from: function (value) {
+      return Math.round(value);
+    }
   }
 });
 
@@ -66,16 +91,16 @@ const checkFormData = (type) => {
   adOfferPrice.setAttribute('min', minOfferPrice[type.value]);
   adOfferPrice.setAttribute('placeholder', minOfferPrice[type.value]);
 
-  priceSlider.noUiSlider.updateOptions( {
+  priceSlider.noUiSlider.updateOptions({
     start: Math.round(Number(minOfferPrice[type.value])),
     range: {
       'min': Math.round(Number(minOfferPrice[adOfferType.value])),
-      'max': 100000
+      'max': ROOM_PRICE_MAX
     },
-  } );
+  });
 };
 
-adOfferPrice.addEventListener('change', ()=>priceSlider.noUiSlider.set(adOfferPrice.value)) ;
+adOfferPrice.addEventListener('change', () => priceSlider.noUiSlider.set(adOfferPrice.value));
 //Устанавливаем начальное минимальное значение при первой загрузке
 checkFormData(adOfferType);
 //Устанавливаем значения при изменении вида предложения.
@@ -120,7 +145,16 @@ adOfferCheckOut.addEventListener('change', () => {
 
 //Очистка формы
 const clearForm = () => {
+  resetMap();
+  mapFiltersCleaner();
   resetDefaultMarker();
+  closePopups();
+  refreshMap();
+};
+
+// Сброс значений фильтров и блокировка
+const beforeLoad = () => {
+  makeFormInactive(mapFilters);
 };
 
 //Добавляем пользовательскую проверку предложения
@@ -146,7 +180,7 @@ submitButton.addEventListener('click', (evt) => {
   disableSubmitButton();
   const isValid = pristine.validate();
   if (isValid) {
-    postAdvertismentSingle(new FormData(evt.target), clearForm, errorHandler);
+    postAdvertisementSingle(new FormData(evt.target), clearForm, errorHandler);
   }
   enableSubmitButton();
 });
@@ -157,4 +191,35 @@ resetButton.addEventListener('click', () => {
   clearForm();
 });
 
-export {makeFormInactive,makeFormActive,clearForm};
+const photoLoadingProcessor = (input, output, newOutput ) => {
+
+  input.addEventListener('change', () => {
+    const file = input.files[0];
+    const fileName = file.name.toLowerCase();
+
+    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+    if (matches) {
+      if (newOutput) {
+        const imgContainer = document.createElement('img');
+        output.append(imgContainer);
+        imgContainer.src = URL.createObjectURL(file);
+      }else{
+        output.src = URL.createObjectURL(file);
+      }
+    }
+  });
+
+};
+
+photoLoadingProcessor (document.querySelector('.ad-form__field input[type=file]'), document.querySelector('.ad-form-header__preview img'), false );
+photoLoadingProcessor (document.querySelector('.ad-form__upload input[type=file]'), document.querySelector('.ad-form__photo'), true);
+
+export {
+  makeFormInactive,
+  makeFormActive,
+  clearForm,
+  onPageLoading,
+  beforeLoad,
+  activateInput
+};
