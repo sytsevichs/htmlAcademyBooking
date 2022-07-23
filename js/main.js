@@ -1,38 +1,11 @@
-import './utils/math.js';
-import './data/generation/datagen.js';
+import { beforeLoad, onPageLoading } from './form-api.js';
 import './map/map-api.js';
-import {getAdvertismentsAll, } from './data/fetch-api.js';
-import {createOfferPopup} from './popup.js';
-import './form-api.js';
+import { getAdvertisementsAll } from './data/fetch-api.js';
+import { placeAdvertisements } from './map/map-manager.js';
+import { errorHandler} from './utils/util.js';
 
-//Интерфейс работы с картой, доступ к карте только через API
-import {
-  createNewLayer,
-  createNewMarker,
-  resetDefaultMarker,
-  addObjectToLayer,
-  addPopupToMarker
-} from './map/map-api.js';
+//блокируем все формы на странице
+onPageLoading();
+//получаем все данные и, при успехе, разблокируем формы и размещаем объявления
+getAdvertisementsAll(beforeLoad,placeAdvertisements,errorHandler);
 
-import {
-  pinIcon
-} from './map/map-icons.js';
-
-import { errorHandler } from './utils/util.js';
-// Функции размещения объявлений на карте
-const placeAdvertismentOnMap = (advertisment, layer) => {
-  const adMarker = createNewMarker(advertisment.location.lat, advertisment.location.lng, pinIcon, false);
-  addObjectToLayer(adMarker,layer);
-  addPopupToMarker(adMarker, createOfferPopup(advertisment.author, advertisment.offer, advertisment.location));
-};
-
-const placeAdvertisments = (advertisments) => {
-  const newLayer = createNewLayer();
-  advertisments.forEach((advertisment) => {
-    placeAdvertismentOnMap(advertisment, newLayer);
-  });
-};
-
-//placeAdvertisments(generatedAdvertisments);
-getAdvertismentsAll(placeAdvertisments,errorHandler);
-resetDefaultMarker();

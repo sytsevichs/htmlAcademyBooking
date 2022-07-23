@@ -5,7 +5,7 @@ import {
 
 import {
   COORDINATES_DECIMAL_PLACES,
-  AD_NUMBER
+  ADVERTISEMENTS_GENERATED_MAX
 } from '../general.js';
 
 //Объявление всех используемых для генерации данных массивов и констант
@@ -131,18 +131,17 @@ const generateRandomOffer = (location) => {
 };
 
 // функция генерации одного предложения
-const generatedAdvertisment = () => {
+const generatedAdvertisement = () => {
   const author = generateRandomAuthor();
   const location = getRandomLocation();
   const offer = generateRandomOffer(location);
   return {author,offer,location};
 };
 // Генерируем массив предложений
-const generatedAdvertisments = [...Array(AD_NUMBER)].map( () => generatedAdvertisment());
+const generatedAdvertisements = [...Array(ADVERTISEMENTS_GENERATED_MAX)].map( () => generatedAdvertisement());
 
 export {
-  generatedAdvertisments,
-  generatedAdvertisment,
+  generatedAdvertisements,
   generateRandomAuthor,
   getRandomLocation,
   generateRandomOffer

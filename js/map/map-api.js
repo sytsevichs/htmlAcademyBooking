@@ -1,5 +1,5 @@
 import {
-  makeFormActive
+  activateInput,
 } from '../form-api.js';
 
 import {
@@ -16,14 +16,9 @@ import {
   fillAddressCoordinates
 } from '../utils/util.js';
 
-const COORDINATES_DECIMAL_PLACES = 5;
-
 //Создание карты с позициионированием на центр Токио
 const map = L.map('map-canvas')
-  .on('load', () => {
-    makeFormActive(document.querySelector('.ad-form'));
-    makeFormActive(document.querySelector('.map__filters'));
-  })
+
   .setView({
     lat: COORDINATES_TOKIO_CENTER.lat,
     lng: COORDINATES_TOKIO_CENTER.lng,
@@ -35,7 +30,9 @@ L.tileLayer(
   //'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png', {
   //  attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
   },
-).addTo(map);
+).addTo(map).on('load', () => {
+  activateInput();
+});
 
 const createNewMarker = (lat, lng, icon, draggable, element) => {
   const marker = L.marker(
@@ -87,20 +84,19 @@ const resetDefaultMarker = () => {
     lat: COORDINATES_TOKIO_CENTER.lat,
     lng: COORDINATES_TOKIO_CENTER.lng,
   });
+  // изменение адреса при сбросе маркера (по ТЗ)
+  fillAddressCoordinates(COORDINATES_TOKIO_CENTER.lat,COORDINATES_TOKIO_CENTER.lng);
 };
 
+//Закрыть все Popup-ы
+const closePopups = () => map.closePopup();
+
 export {
-  defaultMarker,
   resetDefaultMarker,
+  closePopups,
   createNewLayer,
   createNewMarker,
   addObjectToLayer,
   addPopupToMarker,
   resetMap,
 };
-
-/*
-//добавляем предложение
-const mapCanvas = document.querySelector('#map-canvas');
-mapCanvas.appendChild(createOfferPopup(author, offer));
-/**/
