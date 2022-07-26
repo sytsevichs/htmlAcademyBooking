@@ -224,9 +224,7 @@ loadPhoto (document.querySelector('.ad-form__field input[type=file]'), document.
 loadPhoto (document.querySelector('.ad-form__upload input[type=file]'), document.querySelector('.ad-form__photo'), true);
 
 export {
-  makeFormInactive,
   makeFormActive,
-  clearForm,
   changeDefaultAddress,
   deactivateForms,
   processBeforeLoad,

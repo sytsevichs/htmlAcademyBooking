@@ -1,37 +1,30 @@
 import {
   showSystemMessage
 } from '../utils/util.js';
-import { getGeneratedAdvertisements } from './generation/datagen.js';
 
 const SERVER_URL = 'https://26.javascript.pages.academy/keksobooking';
 const ADVERTISEMENT_DATA_SERVICE = `${SERVER_URL}/data`;
 //Переменная для сохранения данных сервиса
 let advertisementsData = [];
 // Функция загрузки объявлений
-const getAdvertisementsAll = (beforeLoad, onSuccess, onError, generateData) => {
+const getAdvertisementsAll = (beforeLoad, onSuccess, onError) => {
   beforeLoad();
   //Получаем данные из сервиса или работаем со сгенерированным набором
-  if (!generateData) {
-    fetch(ADVERTISEMENT_DATA_SERVICE)
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-            .then((data) => {
-              advertisementsData = data;
-              onSuccess(advertisementsData);
-            });
-        } {
-          onError(response.status, response.statusText);
-        }
-      })
-      .catch((err) => {
-        showSystemMessage(`Не удалось загрузить данные: ${err}`, false);
-      });
-  } else {
-    //отображение сгенерированных данных
-    advertisementsData = getGeneratedAdvertisements();
-    onSuccess(advertisementsData);
-  }
+  fetch(ADVERTISEMENT_DATA_SERVICE)
+    .then((response) => {
+      if (response.ok) {
+        return response.json()
+          .then((data) => {
+            advertisementsData = data;
+            onSuccess(advertisementsData);
+          });
+      } {
+        onError(response.status, response.statusText);
+      }
+    })
+    .catch((err) => {
+      showSystemMessage(`Не удалось загрузить данные: ${err}`, false);
+    });
 };
 //постинг формы документа
 const postAdvertisementSingle = (body, onSuccess, onError) => {

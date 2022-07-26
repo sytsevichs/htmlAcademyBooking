@@ -30,8 +30,6 @@ const COORDINATES_DECIMAL_PLACES = 5;
 const MAP_ZOOM = 13;
 // Не фильтровать
 const NO_FILTER = 'any';
-// Количество генерируемых объявлений
-const ADVERTISEMENTS_GENERATED_MAX = 5;
 //Количество отображаемых объявлений
 const ADVERTISEMENTS_DISPLAY_MAX = 10;
 //timeout
@@ -47,7 +45,6 @@ export {
   OFFER_TYPES,
   MAP_ZOOM,
   NO_FILTER,
-  ADVERTISEMENTS_GENERATED_MAX,
   ADVERTISEMENTS_DISPLAY_MAX,
   TIMEOUT_DELAY
 };

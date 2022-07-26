@@ -1,20 +1,18 @@
 import { TIMEOUT_DELAY } from '../data/general.js';
+//Обработка системных сообщений
+const MESSAGE_TIME_OUT = 2000;
 
 //Обработка клавиш
 const isEscapeKey = (evt) => evt.key === 'Escape';
-//const isEnterKey = (evt) => evt.key === 'Enter';
-//Обработка системных сообщений
-const MESSAGE_TIME_OUT = 5000;
 
+//Показать сообщение
 const showSystemMessage = (message,success) => {
   let alertTemplate = '';
-
   if (success) {
     alertTemplate = document.querySelector('#success');
   } else {
     alertTemplate = document.querySelector('#error');
   }
-
   const alertContainer = alertTemplate.cloneNode(true);
   const alertMessage = alertContainer.content.querySelector('p');
   alertMessage.style.zIndex = '100';
@@ -56,7 +54,6 @@ const showSystemMessage = (message,success) => {
     }
   });
 };
-
 //Функция для определения окончания числительного
 const getWordEnding = (counter, modifier) => {
   const endingCounter = counter % 10;
@@ -93,7 +90,6 @@ const handleError = (status, statusText) => {
 };
 //адрес
 const fillAddressCoordinates = (lat, lng) => `${lat} , ${lng}`;
-
 //Функция debounce для устранения дребезга:
 const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
@@ -113,7 +109,6 @@ const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
 const addKeyEventListener = (element, onChange ) => element.addEventListener('change', () => {onChange();});
 
 export {
-  isEscapeKey,
   showSystemMessage,
   getWordEnding,
   fillAddressCoordinates,

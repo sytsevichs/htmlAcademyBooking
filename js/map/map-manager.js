@@ -155,6 +155,5 @@ elementsFacilities.forEach((element) => {
 export {
   refreshMap,
   placeAdvertisements,
-  clearAdvertLayers,
   cleanMapFilters
 };
