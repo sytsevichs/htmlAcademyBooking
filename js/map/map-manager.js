@@ -44,14 +44,12 @@ const PRICE_TYPES = {
     max: NO_FILTER
   },
 };
-
 // Функции размещения объявлений на карте
 const placeAdvertisementOnMap = (advertisement, layer) => {
   const adMarker = createNewMarker(advertisement.location.lat, advertisement.location.lng, pinIcon, false);
   addObjectToLayer(adMarker, layer);
   addPopupToMarker(adMarker, createOfferPopup(advertisement.author, advertisement.offer, advertisement.location));
 };
-
 //Сравнение стоимости номер с границей диапазона цен
 const comparePrices = (price, filter) => (price - filter) < 0;
 //Фильтрация по удобствам
@@ -89,14 +87,13 @@ const filterMap = (adertisement, type, price, rooms, guests, facilities, allfaci
   }
   return true;
 };
-
+//Функция для сбора доступных удобств
 const addFacility = (name, value, facilities) => {
   const facility = {};
   facility['name'] = name;
   facility['value'] = value;
   facilities.push(facility);
 };
-
 // Получаем значение всех фильтров один раз
 const mapFilters = document.querySelector('.map__filters');
 // Поиск не удовлетворяющих условий
@@ -115,10 +112,8 @@ const cleanMapFilters = () => {
     element.checked = false;
   });
 };
-
 // Проверка, что все фильтры доп.услуг пустые
-const allFacilitiesFiltersAreEmpty = (array) => array.every((element) => !element.value);
-
+const checkFacilitiesFiltersAreEmpty = (array) => array.every((element) => !element.value);
 //Собираем слои, на которых размещаются объявления
 const advertLayersCollector = [];
 const clearAdvertLayers = () => {
@@ -130,7 +125,7 @@ const placeAdvertisements = (advertisements) => {
   const filterFacilities = [];
   document.querySelector('.map__features').querySelectorAll('input[type=checkbox]').forEach((input) => addFacility(input.value, input.checked, filterFacilities));
   //Если ни одна из опций не выбрана
-  const anyFacilities = allFacilitiesFiltersAreEmpty(filterFacilities);
+  const anyFacilities = checkFacilitiesFiltersAreEmpty(filterFacilities);
   //Делаем копию для фильтрации полученных данных
   const advertisementFilter = advertisements.filter((advertisement) => filterMap(advertisement, elementType.value, elementPrice.value, elementRooms.value, elementGuests.value, filterFacilities, anyFacilities)).slice(0, ADVERTISEMENTS_DISPLAY_MAX);
   //слой, на котором размещаем все точки
@@ -141,7 +136,7 @@ const placeAdvertisements = (advertisements) => {
   advertLayersCollector.push(newLayer);
   makeFormActive(mapFilters);
 };
-
+//Обновить карту
 const refreshMap = () => {
   clearAdvertLayers();
   placeAdvertisements(advertisementsData);

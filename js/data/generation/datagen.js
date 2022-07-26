@@ -83,6 +83,17 @@ const getRandomLocation = () => {
   };
   return address;
 };
+// Изменение описания
+const changeTitle = (description) => {
+  switch (description) {
+    case OFFER_DESCRIPTION[0]: //Вид на море
+      return OFFER_TITLES['best'];
+    case OFFER_DESCRIPTION[1]: //Вид на бассейн
+      return OFFER_TITLES['good'];
+    default: //Здесь лучше не останавливаться
+      return OFFER_TITLES['normal'];
+  }
+};
 // Генерация случайного предложения
 const generateRandomOffer = (location) => {
   const offer = {
@@ -102,19 +113,7 @@ const generateRandomOffer = (location) => {
       length: getRandomInteger(1, OFFER_PHOTOS.length - 1)
     }, (item, index) => OFFER_PHOTOS[index])
   };
-  // Временный вызов неиспользуемых объектов
-  // Дополнительные функции для вывода в консоль
-  const changeTitle = () => {
-    switch (offer.description) {
-      case OFFER_DESCRIPTION[0]: //Вид на море
-        return OFFER_TITLES['best'];
-      case OFFER_DESCRIPTION[1]: //Вид на бассейн
-        return OFFER_TITLES['good'];
-      default: //Здесь лучше не останавливаться
-        return OFFER_TITLES['normal'];
-    }
-  };
-  offer.title = changeTitle();
+  offer.title = changeTitle(offer.description);
   return offer;
 };
 // функция генерации одного предложения
@@ -122,10 +121,14 @@ const generateAdvertisement = () => {
   const author = generateRandomAuthor();
   const location = getRandomLocation();
   const offer = generateRandomOffer(location);
-  return {author,offer,location};
+  return {
+    author,
+    offer,
+    location
+  };
 };
 // Генерируем массив предложений
-const getGeneratedAdvertisements = () => [...Array(ADVERTISEMENTS_GENERATED_MAX)].map( () => generateAdvertisement());
+const getGeneratedAdvertisements = () => [...Array(ADVERTISEMENTS_GENERATED_MAX)].map(() => generateAdvertisement());
 
 export {
   getGeneratedAdvertisements,

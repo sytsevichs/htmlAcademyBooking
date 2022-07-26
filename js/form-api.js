@@ -76,7 +76,7 @@ const submitButton = adForm.querySelector('.ad-form__submit');
 //Кнопка очистки
 const resetButton = adForm.querySelector('.ad-form__reset');
 //Деактивация при загрузке страницы
-const onPageLoading = () => {
+const deactivateForms = () => {
   makeFormInactive(adForm);
   makeFormInactive(mapFilters);
 };
@@ -166,7 +166,7 @@ const clearForm = () => {
   resetDefaultMarker();
 };
 // Сброс значений фильтров и блокировка
-const beforeLoad = () => {
+const processBeforeLoad = () => {
   makeFormInactive(mapFilters);
 };
 //Добавляем пользовательскую проверку предложения
@@ -228,7 +228,7 @@ export {
   makeFormActive,
   clearForm,
   changeDefaultAddress,
-  onPageLoading,
-  beforeLoad,
+  deactivateForms,
+  processBeforeLoad,
   activateInput
 };
