@@ -30,15 +30,15 @@ const createOfferPopup = (author, offer, location) => {
     mapElement.querySelector('.popup__text--address').textContent = `Адрес (координаты): ${fillAddressCoordinates(location.lat, location.lng)}`;
   }
   //цена
-  const priceText = (price) =>(price > 0) ? `${price} ₽/ночь` : '';
-  assignTextElement(priceText(offer.price),mapElement.querySelector('.popup__text--price'));
+  const getPriceText = (price) =>(price > 0) ? `${price} ₽/ночь` : '';
+  assignTextElement(getPriceText(offer.price),mapElement.querySelector('.popup__text--price'));
 
   const translateOfferType = (type) => OFFER_TYPES[type];
 
   assignTextElement(translateOfferType(offer.type), mapElement.querySelector('.popup__type'));
 
   //количество гостей и комнат
-  const capacityText = (offer.gests>0) ? `${offer.rooms} комнат${getWordEnding(offer.rooms,false)} для ${offer.gests} гост${getWordEnding(offer.gests,true)}` : `${offer.rooms} комнат${getWordEnding(offer.rooms,false)} не для гостей`;
+  const capacityText = (offer.guests>0) ? `${offer.rooms} комнат${getWordEnding(offer.rooms,false)} для ${offer.guests} гост${getWordEnding(offer.guests,true)}` : `${offer.rooms} комнат${getWordEnding(offer.rooms,false)} не для гостей`;
   mapElement.querySelector('.popup__text--capacity').textContent = capacityText;
 
   //Время заезда и выезда

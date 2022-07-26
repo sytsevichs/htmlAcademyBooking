@@ -1,5 +1,5 @@
-/* eslint-disable */
 /*! nouislider - 15.6.0 - 05/01/2022 */
+/* eslint-disable */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :

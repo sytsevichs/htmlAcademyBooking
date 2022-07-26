@@ -1,14 +1,12 @@
+//режим работы сайта
+const WORK_MODE = {
+  productive: false,
+  test: true
+};
 //Центр Токио
 const COORDINATES_TOKIO_CENTER = {
   lat: 35.681729,
   lng: 139.753927,
-};
-
-//Виды сообщений для собственного вида сообщений
-const MESSAGE_TYPES = {
-  error: 'E',
-  warning: 'W',
-  success: 'S',
 };
 
 //тип жилья
@@ -19,7 +17,7 @@ const OFFER_TYPES = {
   palace: 'Дворец',
   hotel: 'Отель',
 };
-
+//Виды файлов
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 //Максимальная цена предложения
@@ -32,16 +30,14 @@ const COORDINATES_DECIMAL_PLACES = 5;
 const MAP_ZOOM = 13;
 // Не фильтровать
 const NO_FILTER = 'any';
-// Количество генерируемых объявлений
-const ADVERTISEMENTS_GENERATED_MAX = 5;
 //Количество отображаемых объявлений
 const ADVERTISEMENTS_DISPLAY_MAX = 10;
 //timeout
 const TIMEOUT_DELAY = 2000;
 
 export {
-  MESSAGE_TYPES,
   FILE_TYPES,
+  WORK_MODE,
   COORDINATES_TOKIO_CENTER,
   COORDINATES_DECIMAL_PLACES,
   ROOM_PRICE_MAX,
@@ -49,7 +45,6 @@ export {
   OFFER_TYPES,
   MAP_ZOOM,
   NO_FILTER,
-  ADVERTISEMENTS_GENERATED_MAX,
   ADVERTISEMENTS_DISPLAY_MAX,
   TIMEOUT_DELAY
 };
