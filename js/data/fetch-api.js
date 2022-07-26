@@ -29,7 +29,8 @@ const getAdvertisementsAll = (beforeLoad, onSuccess, onError, generateData) => {
       });
   } else {
     //отображение сгенерированных данных
-    onSuccess(getGeneratedAdvertisements());
+    advertisementsData = getGeneratedAdvertisements();
+    onSuccess(advertisementsData);
   }
 };
 //постинг формы документа
