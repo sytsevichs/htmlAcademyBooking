@@ -29,12 +29,6 @@ import {
   addKeyEventListener, debounce
 } from '../utils/util.js';
 
-// Функции размещения объявлений на карте
-const placeAdvertisementOnMap = (advertisement, layer) => {
-  const adMarker = createNewMarker(advertisement.location.lat, advertisement.location.lng, pinIcon, false);
-  addObjectToLayer(adMarker, layer);
-  addPopupToMarker(adMarker, createOfferPopup(advertisement.author, advertisement.offer, advertisement.location));
-};
 // Пороговые начения цен
 const PRICE_TYPES = {
   low: {
@@ -51,21 +45,28 @@ const PRICE_TYPES = {
   },
 };
 
+// Функции размещения объявлений на карте
+const placeAdvertisementOnMap = (advertisement, layer) => {
+  const adMarker = createNewMarker(advertisement.location.lat, advertisement.location.lng, pinIcon, false);
+  addObjectToLayer(adMarker, layer);
+  addPopupToMarker(adMarker, createOfferPopup(advertisement.author, advertisement.offer, advertisement.location));
+};
+
 //Сравнение стоимости номер с границей диапазона цен
 const comparePrices = (price, filter) => (price - filter) < 0;
 //Фильтрация по удобствам
-const checkFasilities = (facilities, features) => facilities.every((facility) => features.includes(facility.name));
+const checkFacilities = (facilities, features) => facilities.every((facility) => features.includes(facility.name));
 //фильтры карты
 const filterMap = (adertisement, type, price, rooms, guests, facilities, allfacilities) => {
   //проверка всех фильтров
-  if (type !== NO_FILTER & type !== adertisement.offer.type) {
+  if (type !== NO_FILTER && type !== adertisement.offer.type) {
     return false;
   }
   if (price !== NO_FILTER) {
     if (comparePrices(adertisement.offer.price, PRICE_TYPES[price].min)) {
       return false;
     }
-    if (PRICE_TYPES[price].max !== NO_FILTER & !comparePrices(adertisement.offer.price, PRICE_TYPES[price].max)) {
+    if (PRICE_TYPES[price].max !== NO_FILTER && !comparePrices(adertisement.offer.price, PRICE_TYPES[price].max)) {
       return false;
     }
   }
@@ -80,7 +81,7 @@ const filterMap = (adertisement, type, price, rooms, guests, facilities, allfaci
   // удобства указаны в предложении
     if ('features' in adertisement.offer) {
       //проверка всех выбранных фильтров удобств
-      return checkFasilities(facilities.filter((facility) => facility.value === true),adertisement.offer.features);
+      return checkFacilities(facilities.filter((facility) => facility.value === true),adertisement.offer.features);
     } else {
       //есть запрос на удобства, а их нет совсем
       return false;
@@ -89,7 +90,7 @@ const filterMap = (adertisement, type, price, rooms, guests, facilities, allfaci
   return true;
 };
 
-const addfacility = (name, value, facilities) => {
+const addFacility = (name, value, facilities) => {
   const facility = {};
   facility['name'] = name;
   facility['value'] = value;
@@ -105,7 +106,7 @@ const elementRooms = mapFilters.querySelector('#housing-rooms');
 const elementGuests = mapFilters.querySelector('#housing-guests');
 const elementsFacilities = document.querySelector('.map__features').querySelectorAll('input[type=checkbox]');
 // Очистка фильтров
-const mapFiltersCleaner = () => {
+const cleanMapFilters = () => {
   elementPrice.value = NO_FILTER;
   elementType.value = NO_FILTER;
   elementRooms.value = NO_FILTER;
@@ -116,7 +117,7 @@ const mapFiltersCleaner = () => {
 };
 
 // Проверка, что все фильтры доп.услуг пустые
-const allFasilitiesFiltersAreEmpty = (array) => array.every((element) => !element.value);
+const allFacilitiesFiltersAreEmpty = (array) => array.every((element) => !element.value);
 
 //Собираем слои, на которых размещаются объявления
 const advertLayersCollector = [];
@@ -127,14 +128,14 @@ const clearAdvertLayers = () => {
 const placeAdvertisements = (advertisements) => {
   //Получаем дополнительные фильтры по facilities
   const filterFacilities = [];
-  document.querySelector('.map__features').querySelectorAll('input[type=checkbox]').forEach((input) => addfacility(input.value, input.checked, filterFacilities));
+  document.querySelector('.map__features').querySelectorAll('input[type=checkbox]').forEach((input) => addFacility(input.value, input.checked, filterFacilities));
   //Если ни одна из опций не выбрана
-  const anyFacilities = allFasilitiesFiltersAreEmpty(filterFacilities);
+  const anyFacilities = allFacilitiesFiltersAreEmpty(filterFacilities);
   //Делаем копию для фильтрации полученных данных
-  const advertisementFiler = advertisements.filter((advertisement) => filterMap(advertisement, elementType.value, elementPrice.value, elementRooms.value, elementGuests.value, filterFacilities, anyFacilities)).slice(0, ADVERTISEMENTS_DISPLAY_MAX);
+  const advertisementFilter = advertisements.filter((advertisement) => filterMap(advertisement, elementType.value, elementPrice.value, elementRooms.value, elementGuests.value, filterFacilities, anyFacilities)).slice(0, ADVERTISEMENTS_DISPLAY_MAX);
   //слой, на котором размещаем все точки
   const newLayer = createNewLayer();
-  advertisementFiler.forEach((advertisement) => {
+  advertisementFilter.forEach((advertisement) => {
     placeAdvertisementOnMap(advertisement, newLayer);
   });
   advertLayersCollector.push(newLayer);
@@ -160,5 +161,5 @@ export {
   refreshMap,
   placeAdvertisements,
   clearAdvertLayers,
-  mapFiltersCleaner
+  cleanMapFilters
 };

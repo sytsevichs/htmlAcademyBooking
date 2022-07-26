@@ -1,6 +1,4 @@
-import {
-  activateInput,
-} from '../form-api.js';
+import { activateInput, changeDefaultAddress } from '../form-api.js';
 
 import {
   COORDINATES_TOKIO_CENTER,
@@ -84,8 +82,7 @@ const resetDefaultMarker = () => {
     lat: COORDINATES_TOKIO_CENTER.lat,
     lng: COORDINATES_TOKIO_CENTER.lng,
   });
-  // изменение адреса при сбросе маркера (по ТЗ)
-  fillAddressCoordinates(COORDINATES_TOKIO_CENTER.lat,COORDINATES_TOKIO_CENTER.lng);
+  changeDefaultAddress(COORDINATES_TOKIO_CENTER);
 };
 
 //Закрыть все Popup-ы

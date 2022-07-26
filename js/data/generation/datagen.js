@@ -2,27 +2,22 @@ import {
   getRandomInteger,
   getRandomFloat
 } from '../../utils/math.js';
-
 import {
-  COORDINATES_DECIMAL_PLACES,
-  ADVERTISEMENTS_GENERATED_MAX
+  ADVERTISEMENTS_GENERATED_MAX,
+  COORDINATES_DECIMAL_PLACES
 } from '../general.js';
-
 //Объявление всех используемых для генерации данных массивов и констант
 const NUMBER_OF_AVATARS = 10;
-
+// Генерация массива аватарок авторов
 const AUTHOR_AVATARS = Array.from({
   length: NUMBER_OF_AVATARS
-}, (item, index) => index === NUMBER_OF_AVATARS - 1 ? `img/avatars/user${index + 1}.png` : `img/avatars/user0${index + 1}.png`); // Генерация массива аватарок авторов
-
+}, (item, index) => index === NUMBER_OF_AVATARS - 1 ? `img/avatars/user${index + 1}.png` : `img/avatars/user0${index + 1}.png`);
 // Название предложения
-const offerTitles = {
+const OFFER_TITLES = {
   normal: 'Стандартное предложение',
   good: 'Хорошее предложение',
   best: 'Отличное предложение'
 };
-
-/* Данные предложений */
 // Виды предложений
 const OFFER_TYPES = [
   'palace',
@@ -62,19 +57,16 @@ const OFFER_PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
-
 //Граничные значение координат
 const LATITUDE_MIN = 35.65000;
 const LATITUDE_MAX = 35.70000;
 const LONGITUDE_MIN = 139.70000;
 const LONGITUDE_MAX = 139.80000;
-
 // Диапазон стоимости предложения
 const PRICE_DAY_MIN = 10000;
 const PRICE_DAY_MAX = 20000;
 const NUMBER_MIN = 1;
 const NUMBER_MAX = 8;
-
 // Генерация случайного автора
 const generateRandomAuthor = () => {
   // Автор
@@ -83,7 +75,6 @@ const generateRandomAuthor = () => {
   };
   return author;
 };
-
 // Генерация случайного адреса
 const getRandomLocation = () => {
   const address = {
@@ -92,16 +83,15 @@ const getRandomLocation = () => {
   };
   return address;
 };
-
 // Генерация случайного предложения
 const generateRandomOffer = (location) => {
   const offer = {
-    title: offerTitles['normal'],
+    title: OFFER_TITLES['normal'],
     address: location,
     price: getRandomInteger(PRICE_DAY_MIN, PRICE_DAY_MAX),
     type: OFFER_TYPES[getRandomInteger(0, OFFER_TYPES.length - 1)],
     rooms: getRandomInteger(NUMBER_MIN, NUMBER_MAX),
-    gests: getRandomInteger(NUMBER_MIN, NUMBER_MAX),
+    guests: getRandomInteger(NUMBER_MIN, NUMBER_MAX),
     checkin: OFFER_CHECKIN_TIMES[getRandomInteger(0, OFFER_CHECKIN_TIMES.length - 1)],
     checkout: OFFER_CHECKOUT_TIMES[getRandomInteger(0, OFFER_CHECKOUT_TIMES.length - 1)],
     features: Array.from({
@@ -112,36 +102,33 @@ const generateRandomOffer = (location) => {
       length: getRandomInteger(1, OFFER_PHOTOS.length - 1)
     }, (item, index) => OFFER_PHOTOS[index])
   };
-
   // Временный вызов неиспользуемых объектов
   // Дополнительные функции для вывода в консоль
   const changeTitle = () => {
     switch (offer.description) {
       case OFFER_DESCRIPTION[0]: //Вид на море
-        return offerTitles['best'];
+        return OFFER_TITLES['best'];
       case OFFER_DESCRIPTION[1]: //Вид на бассейн
-        return offerTitles['good'];
+        return OFFER_TITLES['good'];
       default: //Здесь лучше не останавливаться
-        return offerTitles['normal'];
+        return OFFER_TITLES['normal'];
     }
   };
-
   offer.title = changeTitle();
   return offer;
 };
-
 // функция генерации одного предложения
-const generatedAdvertisement = () => {
+const generateAdvertisement = () => {
   const author = generateRandomAuthor();
   const location = getRandomLocation();
   const offer = generateRandomOffer(location);
   return {author,offer,location};
 };
 // Генерируем массив предложений
-const generatedAdvertisements = [...Array(ADVERTISEMENTS_GENERATED_MAX)].map( () => generatedAdvertisement());
+const getGeneratedAdvertisements = () => [...Array(ADVERTISEMENTS_GENERATED_MAX)].map( () => generateAdvertisement());
 
 export {
-  generatedAdvertisements,
+  getGeneratedAdvertisements,
   generateRandomAuthor,
   getRandomLocation,
   generateRandomOffer

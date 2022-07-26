@@ -4,13 +4,6 @@ const COORDINATES_TOKIO_CENTER = {
   lng: 139.753927,
 };
 
-//Виды сообщений для собственного вида сообщений
-const MESSAGE_TYPES = {
-  error: 'E',
-  warning: 'W',
-  success: 'S',
-};
-
 //тип жилья
 const OFFER_TYPES = {
   flat: 'Квартира',
@@ -40,7 +33,6 @@ const ADVERTISEMENTS_DISPLAY_MAX = 10;
 const TIMEOUT_DELAY = 2000;
 
 export {
-  MESSAGE_TYPES,
   FILE_TYPES,
   COORDINATES_TOKIO_CENTER,
   COORDINATES_DECIMAL_PLACES,
