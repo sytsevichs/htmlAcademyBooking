@@ -25,7 +25,7 @@
     "npm": "8.x"
   },
   "dependencies": {
-    "leaflet": "^1.7.1",
-    "nouislider": "^15.6.0"
+    "leaflet": "1.7.1",
+    "nouislider": "15.6.0"
   }
 }
